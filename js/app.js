@@ -58,10 +58,10 @@ var budgetController = (function () {
             return newItem;
         },
 
-        deleteItem: function(type, id) {
+        deleteItem: function (type, id) {
             var ids, index;
 
-            ids = data.allItems[type].map(function(current) {
+            ids = data.allItems[type].map(function (current) {
                 return current.id;
             });
             index = ids.indexOf(id);
@@ -86,6 +86,13 @@ var budgetController = (function () {
                 data.percentage = -1;
             }
         },
+
+        calculatePercentages: function(){
+
+        // % 
+
+        },
+
 
         getBudget: function () {
             return {
@@ -161,7 +168,7 @@ var UIController = (function () {
 
         },
 
-        deleteListItem: function(selectorID) {
+        deleteListItem: function (selectorID) {
             var el = document.getElementById(selectorID);
 
             el.parentNode.removeChild(el);
@@ -195,7 +202,7 @@ var UIController = (function () {
 
         },
 
-        getDOMstrings: function () { 
+        getDOMstrings: function () {
             return DOMstrings;
         }
 
@@ -238,13 +245,21 @@ var Controller = (function (budgetCtrl, UICtrl) {
         UICtrl.displayBudget(budget);
     };
 
+    var updatePercentages = function() {
+        // 1 calculate percentages
+
+        // 2 read percentages from the budget controller
+
+        // 3 update the UI with the new percentages
+    };
+
     var ctrlAddItem = function () {
         var input, newItem;
 
-        // 1. Get the field input data
-        var input = UICtrl.getInput();
+            // 1. Get the field input data
+            var input = UICtrl.getInput();
 
-        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
+            if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
 
             // 2. Add the item to the budget controller
             var newItem = budgetCtrl.addItem(input.type, input.description, input.value);
@@ -252,12 +267,14 @@ var Controller = (function (budgetCtrl, UICtrl) {
             // 3. Add the item to the UI
             UICtrl.addListItem(newItem, input.type);
 
-            // 3.5 Clear the fields
+            // 4 Clear the fields
             UICtrl.clearFields();
 
-            // 4. Calculate and update budget
+            // 5. Calculate and update budget
             updateBudget();
 
+            // 6. Calculate and update percentages
+            updatePercentages();
         }
     };
 
@@ -266,17 +283,19 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
 
-        if(itemID) {
+        if (itemID) {
             splitID = itemID.split('-');
             type = splitID[0];
-            ID = parseInt( splitID[1]);
+            ID = parseInt(splitID[1]);
 
             // 1 delete the item from the data structure
             budgetCtrl.deleteItem(type, ID);
             // 2 delete the item from the UI
             UICtrl.deleteListItem(itemID);
-            // 4. Uodate and show the new budget
+            // 3. Uodate and show the new budget
             updateBudget();
+            // 4. Calculate and update percentages
+            updatePercentages();
         }
     };
 
