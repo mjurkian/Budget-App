@@ -5,7 +5,18 @@ var budgetController = (function () {
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percentage = -1;
     };
+
+    Expense.prototype.calculatePercentage = function (totalIncome) {
+        if (totalIncome > 0) {
+        this.percentage = Math.round((this.value / totalIncome) * 100);
+        } else {
+            this.percentage = -1;
+        }
+    };
+
+
     var Income = function (id, description, value) {
         this.id = id;
         this.description = description;
@@ -87,7 +98,7 @@ var budgetController = (function () {
             }
         },
 
-        calculatePercentages: function(){
+        calculatePercentage: function(){
 
         // % 
 
