@@ -104,15 +104,6 @@ var budgetController = (function () {
 
         calculatePercentages: function() {
             
-            /*
-            a=20
-            b=10
-            c=40
-            income = 100
-            a=20/100=20%
-            b=10/100=10%
-            c=40/100=40%
-            */
             
             data.allItems.exp.forEach(function(cur) {
                cur.calcPercentage(data.totals.inc);
@@ -235,6 +226,21 @@ var UIController = (function () {
 
         },
 
+        changedType: function() {
+            
+            var fields = document.querySelectorAll(
+                DOMstrings.inputType + ',' +
+                DOMstrings.inputDescription + ',' +
+                DOMstrings.inputValue);
+            
+            nodeListForEach(fields, function(cur) {
+               cur.classList.toggle('red-focus'); 
+            });
+            
+            document.querySelector(DOMstrings.inputBtn).classList.toggle('red');
+            
+        },
+        
         getDOMstrings: function () {
             return DOMstrings;
         }
@@ -263,7 +269,7 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
         document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
 
-
+        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changedType);    
     };
 
     var updateBudget = function () {
